@@ -36,13 +36,13 @@ class TwitterNotifier(BaseNotifier):
             config.twitter['access_token_secret'],
         )
 
-    def notify(self, node):
+    def notify(self, contact, node):
         req = self.api.request('direct_messages/new', {
-            'screen_name': self.regex.match(node.contact).group(1),
+            'screen_name': self.regex.match(contact).group(1),
             'text': config.notify_text_short % {
                 'mac': node.mac,
                 'name': node.name,
-                'contact': node.contact,
+                'contact': contact,
                 'since': str(int((time() - node.lastseen) / 60)) + 'm',
             },
         })

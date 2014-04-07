@@ -59,8 +59,8 @@ class EmailNotifier(BaseNotifier):
             self.smtp.starttls()
         self.smtp.login(config.email['smtp_username'], config.email['smtp_password'])
 
-    def notify(self, node):
-        receipient = self.regex.match(node.contact).group(1)
+    def notify(self, contact, node):
+        receipient = self.regex.match(contact).group(1)
         msg = MIMEText(config.notify_text_long % {
             'mac': node.mac,
             'name': node.name,
