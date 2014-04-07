@@ -28,8 +28,7 @@ class NotifierManager(PluginManager):
         for contact in contacts:
             notifier = self.find_matching(contact)
             if notifier:
-                if input('Notify for %s via %s with %s? ' % (node.name, contact, notifier.__class__.__name__)) == 'y':
-                    notified |= bool(notifier.notify(contact, node))
+                notified |= bool(notifier.notify(contact, node))
 
         return notified
 
