@@ -70,10 +70,8 @@ class EmailNotifier(BaseNotifier):
         msg['Subject'] = '[Nodewatcher] %s offline' % node.name
         msg['From'] = config.email_from
         msg['To'] = receipient
-        print(msg)
 
-        if input("Send mail to %s? " % receipient) == 'y':
-            return self.smtp.send_message(msg)
+        return self.smtp.send_message(msg)
 
     def quit(self):
         self.smtp.quit()

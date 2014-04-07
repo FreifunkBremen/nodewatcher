@@ -32,6 +32,8 @@ class NotifierManager(PluginManager):
             Node.contact != None,
         )
         for node in to_notify:
+            if input('Notify for %s via %s? ' % (node.name, node.contact)) != 'y':
+                continue
             if self.notify_node(node):
                 node.lastcontact = time()
         session.commit()

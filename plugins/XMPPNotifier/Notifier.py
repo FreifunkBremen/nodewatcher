@@ -26,9 +26,8 @@ class XMPPNotifier(BaseNotifier):
         receipient = self.regex.match(node.contact).group(1)
         print(msg)
 
-        if input("Send XMPP message to %s? " % receipient) == 'y':
-            self.xmpp.send_message(mto=receipient, mbody=msg, mtype='chat')
-            return True
+        self.xmpp.send_message(mto=receipient, mbody=msg, mtype='chat')
+        return True
 
     def quit(self):
         self.xmpp.disconnect(wait=True)
