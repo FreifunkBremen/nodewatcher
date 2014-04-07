@@ -11,6 +11,7 @@ class SourceManager(PluginManager):
 
     def get_nodes(self):
         nodes = []
+        # TODO: detect duplicates
         for notifier in self.plugins:
             try:
                 nodes.extend(notifier.nodes())
@@ -23,8 +24,11 @@ class SourceManager(PluginManager):
         for node in nodes:
             dbnode = session.query(Node).filter_by(mac=node['mac']).first()
             if not dbnode:
-                dbnode = Node(**node)
+                dbnode = Node(mac=node['mac'])
                 session.add(dbnode)
+            dbnode.name = node['name']
+            dbnode.contact = node.get('contact')
+            dbnode.vpn = node.get('vpn')
             if node['online']:
                 dbnode.lastseen = time()
         session.commit()
