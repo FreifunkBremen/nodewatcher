@@ -6,6 +6,6 @@ owners if their nodes go down.
 
 It is modularized so that it can take the node status from various sources
 (currently only A.L.F.R.E.D., as used in [gluon]) and notify via various
-channels (currently e-mail and XMPP).
+channels (currently e-mail, XMPP and Twitter direct messages).
 
 [gluon]: https://github.com/freifunk-gluon/gluon/

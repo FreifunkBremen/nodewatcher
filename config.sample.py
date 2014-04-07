@@ -37,4 +37,11 @@ xmpp = {
     'password': 'secret',
 }
 
+twitter = {
+    'api_key': 'foo1',
+    'api_secret': 'bar1',
+    'access_token_key': 'foo2',
+    'access_token_secret': 'bar2',
+}
+
 ca_certs = '/etc/ssl/certs/ca-certificates.crt'
