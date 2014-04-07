@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 
+import os
 import re
+os.chdir(os.path.dirname(os.path.realpath(__file__)))
 from NotifierManager import NotifierManager
 from SourceManager import SourceManager
 
