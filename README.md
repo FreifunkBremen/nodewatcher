@@ -18,3 +18,16 @@ The required Python packages are
 * SQLAlchemy
 * sleepxmpp ≥1.0 (for the XMPP notification plugin)
 * TwitterAPI (for the Twitter notification plugin)
+
+Setup
+-----
+
+Copy the `config.sample.py` to `config.py` and adept it to your needs. Then execute
+```python
+from db import Base, engine
+Base.metadata.create_all(engine)
+```
+to create the database structure. After that, all you need to do is call the `main.py`, for example via a cronjob in `/etc/cron.d/nodewatcher`:
+```cron
+*/5 * * * * root /usr/local/src/nodewatcher/main.py
+```
