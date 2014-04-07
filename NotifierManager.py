@@ -30,9 +30,11 @@ class NotifierManager(PluginManager):
             Node.lastseen <= time() - config.notify_timeout,
             or_(Node.lastcontact < Node.lastseen, Node.lastcontact == None),
             Node.contact != None,
+            Node.ignore.in_([None, 0])
         )
         for node in to_notify:
-            if input('Notify for %s via %s? ' % (node.name, node.contact)) != 'y':
+            notifier = self.find_matching(node.contact)
+            if input('Notify for %s via %s with %s? ' % (node.name, node.contact, notifier.__class__.__name__)) != 'y':
                 continue
             if self.notify_node(node):
                 node.lastcontact = time()
