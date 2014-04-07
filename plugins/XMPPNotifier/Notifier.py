@@ -7,9 +7,9 @@ class XMPPNotifier(BaseNotifier):
     regex = re.compile('^xmpp:([^:@\s]+@[^:@\s]+)$')
 
     def __init__(self):
-        self.xmpp = ClientXMPP(config.xmpp_username, config.xmpp_password)
+        self.xmpp = ClientXMPP(config.xmpp['username'], config.xmpp['password'])
         self.xmpp.add_event_handler('session_start', self.start)
-        self.xmpp.connect(address=config.xmpp_server, use_tls=True)
+        self.xmpp.connect(address=config.xmpp['server'], use_tls=True)
         self.xmpp.process()
 
     def start(self, event):

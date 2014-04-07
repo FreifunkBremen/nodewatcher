@@ -24,13 +24,17 @@ wollen, sende bitte eine Mail an nodewatcher@example.org"""
 
 notify_text_short = "Hey Freifunker, dein Knoten %(name)s (MAC %(mac)s) ist seit %(since)s offline!"
 
-email_from = 'nodewatcher@example.org'
-email_smtp_server = 'mail.example.org'
-email_smtp_username = 'nodewatcher@example.org'
-email_smtp_password = 'secret'
+email = {
+    'from': 'nodewatcher@example.org',
+    'smtp_server': 'mail.example.org',
+    'smtp_username': 'nodewatcher@example.org',
+    'smtp_password': 'secret',
+}
 
-xmpp_server = ('jabber.example.org', 5222)
-xmpp_username = 'nodewatcher@example.org'
-xmpp_password = 'secret'
+xmpp = {
+    'server': ('jabber.example.org', 5222),
+    'username': 'nodewatcher@example.org',
+    'password': 'secret',
+}
 
 ca_certs = '/etc/ssl/certs/ca-certificates.crt'

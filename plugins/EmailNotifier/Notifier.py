@@ -53,11 +53,11 @@ class EmailNotifier(BaseNotifier):
     regex = re.compile('^(?:mailto:)?([^:@\s]+@[^:@\s]+)$')
 
     def __init__(self):
-        self.smtp = MySMTP(config.email_smtp_server)
+        self.smtp = MySMTP(config.email['smtp_server'])
         self.smtp.ehlo()
         if self.smtp.has_extn('STARTTLS'):
             self.smtp.starttls()
-        self.smtp.login(config.email_smtp_username, config.email_smtp_password)
+        self.smtp.login(config.email['smtp_username'], config.email['smtp_password'])
 
     def notify(self, node):
         receipient = self.regex.match(node.contact).group(1)
@@ -68,7 +68,7 @@ class EmailNotifier(BaseNotifier):
             'since': str(int((time() - node.lastseen) / 60)) + 'm',
         }, _charset='utf-8')
         msg['Subject'] = '[Nodewatcher] %s offline' % node.name
-        msg['From'] = config.email_from
+        msg['From'] = config.email['from']
         msg['To'] = receipient
 
         return self.smtp.send_message(msg)
