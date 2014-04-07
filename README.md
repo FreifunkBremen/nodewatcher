@@ -9,3 +9,12 @@ It is modularized so that it can take the node status from various sources
 channels (currently e-mail, XMPP and Twitter direct messages).
 
 [gluon]: https://github.com/freifunk-gluon/gluon/
+
+Requirements
+------------
+
+The required Python packages are
+
+* SQLAlchemy
+* sleepxmpp ≥1.0 (for the XMPP notification plugin)
+* TwitterAPI (for the Twitter notification plugin)
