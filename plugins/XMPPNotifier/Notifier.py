@@ -1,0 +1,34 @@
+import re
+from sleekxmpp import ClientXMPP
+from BaseNotifier import BaseNotifier
+import config
+
+class XMPPNotifier(BaseNotifier):
+    regex = re.compile('^xmpp:([^:@\s]+@[^:@\s]+)$')
+
+    def __init__(self):
+        self.xmpp = ClientXMPP(config.xmpp_username, config.xmpp_password)
+        self.xmpp.add_event_handler('session_start', self.start)
+        self.xmpp.connect(address=config.xmpp_server, use_tls=True)
+        self.xmpp.process()
+
+    def start(self, event):
+        self.xmpp.send_presence()
+        self.xmpp.get_roster()
+
+    def notify(self, node):
+        msg = config.notify_text_short % {
+            'mac': node.mac,
+            'name': node.name,
+            'contact': node.contact,
+            'since': str(int((time() - node.lastseen) / 60)) + 'm',
+        }
+        receipient = self.regex.match(node.contact).group(1)
+        print(msg)
+
+        if input("Send XMPP message to %s? " % receipient) == 'y':
+            self.xmpp.send_message(mto=receipient, mbody=msg, mtype='chat')
+            return True
+
+    def quit(self):
+        self.xmpp.disconnect(wait=True)
