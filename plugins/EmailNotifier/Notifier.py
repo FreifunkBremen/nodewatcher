@@ -71,7 +71,8 @@ class EmailNotifier(BaseNotifier):
         msg['From'] = config.email['from']
         msg['To'] = receipient
 
-        return self.smtp.send_message(msg)
+        self.smtp.send_message(msg)
+        return True
 
     def quit(self):
         self.smtp.quit()
