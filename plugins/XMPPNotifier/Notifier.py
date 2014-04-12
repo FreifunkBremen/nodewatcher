@@ -24,7 +24,6 @@ class XMPPNotifier(BaseNotifier):
             'since': str(int((time() - node.lastseen) / 60)) + 'm',
         }
         receipient = self.regex.match(contact).group(1)
-        print(msg)
 
         self.xmpp.send_message(mto=receipient, mbody=msg, mtype='chat')
         return True
