@@ -1,18 +1,24 @@
+# Database URL
+# see http://docs.sqlalchemy.org/en/rel_0_9/core/engines.html#database-urls for
+# list of supported backends. Note that you may have to install further Python
+# packages!
 db = 'sqlite:///nodes.db'
 
+# Notify timeout
+# How long to wait for node to come back before notifying it's owner
 notify_timeout = 60*60 # one hour
-renotify_interval = 24*60*60 # one day
 
+# Long notification text, used for example for mails
 notify_text_long = """Hallo lieber Freifunker!
 
 Dein Knoten %(name)s (MAC-Adresse %(mac)s) ist seit %(since)s offline.
 
 Vielleicht ist er nicht mehr in Reichweite eines benachbarten Knoten oder seine
 VPN-Verbindung ist abgebrochen? Wenn du Probleme hast, den Knoten wieder zum
-Laufen zu bekommen, wende dich gerne an liste@bremen.freifunk.net
+Laufen zu bekommen, wende dich gerne an freifunk@example.org
 
 Viele Grüße,
-Freifunk Bremen
+deine Freifunk-Community
 
 -- 
 Du erhältst diese Mail, weil die E-Mailadresse %(contact)s als Kontakt bei der
@@ -22,8 +28,10 @@ pro Ausfall des Knotens.
 Solltest du für diesen oder alle deine Knoten keine solchen Mails mehr erhalten
 wollen, sende bitte eine Mail an nodewatcher@example.org"""
 
+# Short notification text, used for example for XMPP or Twitter
 notify_text_short = "Hey Freifunker, dein Knoten %(name)s (MAC %(mac)s) ist seit %(since)s offline!"
 
+# E-Mail server configuration
 email = {
     'from': 'nodewatcher@example.org',
     'smtp_server': 'mail.example.org',
@@ -31,12 +39,18 @@ email = {
     'smtp_password': 'secret',
 }
 
+# XMPP server configuration
 xmpp = {
     'server': ('jabber.example.org', 5222),
     'username': 'nodewatcher@example.org',
     'password': 'secret',
 }
 
+# Twitter API configuration
+# Note that you can only send direct messages to your followers.
+# The needed keys can be generated and obtained from https://app.twitter.com/.
+# Note that you need to generate an Access token that is allowed to access
+# direct messages.
 twitter = {
     'api_key': 'foo1',
     'api_secret': 'bar1',
@@ -44,4 +58,7 @@ twitter = {
     'access_token_secret': 'bar2',
 }
 
+# Trusted Certificate Authorities
+# This path points to a file that contains all trusted root CAs.
+# Debian: /etc/ssl/certs/ca-certificates.crt
 ca_certs = '/etc/ssl/certs/ca-certificates.crt'
