@@ -1,4 +1,5 @@
 import re
+from time import sleep
 from sleekxmpp import ClientXMPP
 from BaseNotifier import BaseNotifier
 import config
@@ -7,6 +8,7 @@ class XMPPNotifier(BaseNotifier):
     regex = re.compile('^xmpp:([^:@\s]+@[^:@\s]+)$')
 
     def __init__(self):
+        self.started = False
         self.xmpp = ClientXMPP(config.xmpp['username'], config.xmpp['password'])
         self.xmpp.add_event_handler('session_start', self.start)
         self.xmpp.connect(address=config.xmpp['server'], use_tls=True)
@@ -15,6 +17,7 @@ class XMPPNotifier(BaseNotifier):
     def start(self, event):
         self.xmpp.send_presence()
         self.xmpp.get_roster()
+        self.started = True
 
     def notify(self, contact, node):
         msg = node.format_infotext(config.xmpp['text'])
@@ -24,4 +27,6 @@ class XMPPNotifier(BaseNotifier):
         return True
 
     def quit(self):
+        while not self.started:
+            sleep(0.5)
         self.xmpp.disconnect(wait=True)
