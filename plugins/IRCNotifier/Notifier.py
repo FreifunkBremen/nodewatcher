@@ -1,0 +1,90 @@
+import re
+import logging
+import threading
+from time import sleep
+from queue import Queue, Empty
+import irc.client
+from BaseNotifier import BaseNotifier
+import config
+
+logger = logging.getLogger(__name__)
+
+class ThreadDoneException(Exception):
+    pass
+
+class ThreadedIRCClient(threading.Thread):
+    def __init__(self):
+        super().__init__()
+        self.client = irc.client.IRC()
+        self.client.add_global_handler("welcome", self.on_connect)
+        self.client.add_global_handler("disconnect", self.on_disconnect)
+        self.servers = {}
+
+    def privmsg(self, hostname, target, message, port=6667):
+        server = self.servers.get(hostname)
+        if not server:
+            server = self.client.server().connect(hostname, port, config.irc['nickname'])
+            server.welcome = False
+            server.queue = Queue()
+            self.servers[hostname] = server
+            if not self.is_alive():
+                self.start()
+
+        privmsg = (target, message)
+        server.queue.put(privmsg)
+
+    def on_connect(self, server, event):
+        server.welcome = True
+
+    def on_disconnect(self, server, event):
+        for k,v in self.servers.items():
+            if v == server:
+                del self.servers[k]
+                break
+        logger.debug("Remaining servers: %i" % len(self.servers))
+        if not self.servers:
+            raise ThreadDoneException()
+
+    def run(self):
+        logger.debug("Main IRCNotifier thread running")
+        try:
+            while True:
+                self.client.process_once()
+                for server in self.client.connections:
+                    if server.welcome:
+                        try:
+                            while True:
+                                privmsg = server.queue.get_nowait()
+                                if privmsg == 'QUIT':
+                                    server.queue.task_done()
+                                    server.disconnect()
+                                else:
+                                    server.privmsg(*privmsg)
+                                server.queue.task_done()
+                        except Empty:
+                            pass
+                sleep(0.5)
+        except ThreadDoneException:
+            pass
+        logger.debug("Main IRCNotifier thread ended")
+
+    def quit(self):
+        for server in self.client.connections:
+            server.queue.put('QUIT')
+            server.queue.join()
+
+class IRCNotifier(BaseNotifier):
+    regex = re.compile('^irc://(?P<server>[a-zA-Z0-9\.]+)(?::(?P<port>\d+))?/(?:(?P<channel>[^ ,]+)|(?P<nick>[^ ,]+),isnick)$')
+
+    def __init__(self):
+        self.client = ThreadedIRCClient()
+
+    def notify(self, contact, node):
+        msg = node.format_infotext(config.irc['text'])
+
+        match = self.regex.match(contact)
+        self.client.privmsg(match.group('server'), match.group('channel') or match.group('nick'), msg, match.group('port') or 6667)
+        return True
+
+    def quit(self):
+        self.client.quit()
