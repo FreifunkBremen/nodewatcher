@@ -67,3 +67,4 @@ if __name__ == '__main__':
     print("Available notifiers:")
     for notifier in m.plugins:
         print("%s\t%s" % (notifier.__class__.__name__, notifier.regex.pattern))
+    m.quit()
