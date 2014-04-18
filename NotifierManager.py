@@ -18,17 +18,27 @@ class NotifierManager(PluginManager):
             except:
                 sys.excepthook(*sys.exc_info())
 
-    def notify_node(self, node):
+    @staticmethod
+    def split_contacts(contacts):
         try:
-            contacts = node.contact.split(', ')
+            return contacts.split(', ')
         except AttributeError:
-            contacts = [node.contact]
+            return [contacts]
+
+    def notify_node(self, node):
+        contacts = self.split_contacts(node.contact)
+        copy_contacts = self.split_contacts(config.copy_contact)
 
         notified = False
         for contact in contacts:
             notifier = self.find_matching(contact)
             if notifier:
                 notified |= bool(notifier.notify(contact, node))
+
+        for contact in set(copy_contacts) - set(contacts):
+            notifier = self.find_matching(contact)
+            if notifier:
+                notifier.notify(contact, node)
 
         return notified
 
