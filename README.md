@@ -6,9 +6,22 @@ owners if their nodes go down.
 
 It is modularized so that it can take the node status from various sources
 (currently only A.L.F.R.E.D., as used in [gluon]) and notify via various
-channels (currently e-mail, XMPP and Twitter direct messages).
+methods (see below).
 
 [gluon]: https://github.com/freifunk-gluon/gluon/
+
+Contact methods
+---------------
+
+Depending on the source, the owners provide means of contact. These may be any of the following methods:
+
+Method     | URI scheme
+-----------|-------------------------------------------------
+E-Mail     | mailto:mail@example.org or just mail@example.org
+XMPP       | xmpp:jabber@example.org
+Twitter DM | @TwitterUsername
+
+Multiple contact methods can be specified separated by ", " (without quotes).
 
 Requirements
 ------------
