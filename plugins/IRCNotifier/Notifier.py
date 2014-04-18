@@ -59,7 +59,12 @@ class ThreadedIRCClient(threading.Thread):
                                     server.queue.task_done()
                                     server.disconnect()
                                 else:
-                                    server.privmsg(*privmsg)
+                                    if privmsg[0][0] == '#':
+                                        server.join(privmsg[0])
+                                        server.privmsg(*privmsg)
+                                        server.part(privmsg[0])
+                                    else:
+                                        server.privmsg(*privmsg)
                                 server.queue.task_done()
                         except Empty:
                             pass
@@ -74,7 +79,7 @@ class ThreadedIRCClient(threading.Thread):
             server.queue.join()
 
 class IRCNotifier(BaseNotifier):
-    regex = re.compile('^irc://(?P<server>[a-zA-Z0-9\.]+)(?::(?P<port>\d+))?/(?:(?P<channel>[^ ,]+)|(?P<nick>[^ ,]+),isnick)$')
+    regex = re.compile('^irc://(?P<server>[a-zA-Z0-9\.]+)(?::(?P<port>\d+))?/(?:#?(?P<channel>[^ ,]+)|(?P<nick>[^ ,]+),isnick)$')
 
     def __init__(self):
         self.client = ThreadedIRCClient()
@@ -83,7 +88,11 @@ class IRCNotifier(BaseNotifier):
         msg = node.format_infotext(config.irc['text'])
 
         match = self.regex.match(contact)
-        self.client.privmsg(match.group('server'), match.group('channel') or match.group('nick'), msg, match.group('port') or 6667)
+        if match.group('nick'):
+            target = match.group('nick')
+        elif match.group('channel'):
+            target = '#' + match.group('channel')
+        self.client.privmsg(match.group('server'), target, msg, match.group('port') or 6667)
         return True
 
     def quit(self):
