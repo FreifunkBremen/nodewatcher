@@ -1,7 +1,10 @@
 import sys
 import os
 import imp
+import logging
 import config
+
+logger = logging.getLogger(__name__)
 
 class PluginManager(object):
     modulename = None
@@ -23,7 +26,7 @@ class PluginManager(object):
             try:
                 cls = getattr(module, i)
             except AttributeError:
-                pass
+                continue
             finally:
                 if info[0]:
                     info[0].close()
@@ -32,7 +35,7 @@ class PluginManager(object):
                 try:
                     self.plugins.append(cls())
                 except:
-                    sys.excepthook(*sys.exc_info())
+                    logger.exception("Exception while instiating %s" % cls.__name__)
 
     def quit(self):
         for notifier in self.plugins:

@@ -1,10 +1,12 @@
 import sys
 import os
-import imp
+import logging
 import config
 from time import time
 from PluginManager import PluginManager
 from db import session, Node
+
+logger = logging.getLogger(__name__)
 
 class SourceManager(PluginManager):
     modulename = 'Source'
@@ -12,11 +14,11 @@ class SourceManager(PluginManager):
     def get_nodes(self):
         nodes = []
         # TODO: detect duplicates
-        for notifier in self.plugins:
+        for source in self.plugins:
             try:
-                nodes.extend(notifier.nodes())
+                nodes.extend(source.nodes())
             except:
-                sys.excepthook(*sys.exc_info())
+                logger.exception("Exception while getting nodes from %s" % source.__class__.__name__)
         return nodes
 
     def update_database(self):

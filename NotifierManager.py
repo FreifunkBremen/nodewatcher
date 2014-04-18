@@ -1,11 +1,13 @@
 import sys
 import os
-import imp
+import logging
 import config
 from time import time
 from sqlalchemy import or_
 from PluginManager import PluginManager
 from db import session, Node
+
+logger = logging.getLogger(__name__)
 
 class NotifierManager(PluginManager):
     modulename = 'Notifier'
@@ -16,7 +18,7 @@ class NotifierManager(PluginManager):
                 if notifier.suitable(contact):
                     return notifier
             except:
-                sys.excepthook(*sys.exc_info())
+                logger.exception("Exception while determining if %s is suitable for %s" % (notifier.__class__.__name__, contact))
 
     @staticmethod
     def split_contacts(contacts):
@@ -33,12 +35,18 @@ class NotifierManager(PluginManager):
         for contact in contacts:
             notifier = self.find_matching(contact)
             if notifier:
-                notified |= bool(notifier.notify(contact, node))
+                try:
+                    notified |= bool(notifier.notify(contact, node))
+                except:
+                    logger.exception("Exception during notifiction via %s" % notifier.__class__.__name__)
 
         for contact in set(copy_contacts) - set(contacts):
             notifier = self.find_matching(contact)
             if notifier:
-                notifier.notify(contact, node)
+                try:
+                    notifier.notify(contact, node)
+                except:
+                    logger.exception("Exception during notifiction via %s" % notifier.__class__.__name__)
 
         return notified
 
