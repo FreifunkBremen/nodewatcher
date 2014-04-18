@@ -1,7 +1,40 @@
 from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from datetime import datetime
 from config import db
+
+try:
+    from babel.dates import format_timedelta
+except ImportError:
+    def format_timedelta(timed):
+        ret = []
+        if timed.days == 1:
+            ret.append("einem Tag")
+        elif timed.days > 1:
+            ret.append("%i Tagen" % timed.days)
+
+        if timed.seconds:
+            hours = timed.seconds / 3600
+            if hours == 1:
+                ret.append("einer Stunde")
+            elif hours > 1:
+                ret.append("%i Stunden" % hours)
+
+            minutes = (timed.seconds % 3600) / 60
+            if minutes == 1:
+                ret.append("einer Minute")
+            elif minutes > 1:
+                ret.append("%i Minuten" % minutes)
+
+        if not ret:
+            ret = ["gerade eben"]
+
+        try:
+            return " und ".join(ret[0:2])
+        except IndexError:
+            return ret[0]
+
 
 Base = declarative_base()
 
@@ -18,6 +51,14 @@ class Node(Base):
 
     def __repr__(self):
         return "<Node(mac='%s', name='%s')>" % (self.mac, self.name)
+
+    def format_infotext(self, text):
+        return text % {
+            'mac': self.mac,
+            'name': self.name,
+            'contact': self.contact,
+            'since': format_timedelta(datetime.now() - datetime.fromtimestamp(self.lastseen)),
+        }
 
 engine = create_engine(db)
 Session = sessionmaker(bind=engine)

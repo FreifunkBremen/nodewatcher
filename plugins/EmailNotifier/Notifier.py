@@ -61,12 +61,7 @@ class EmailNotifier(BaseNotifier):
 
     def notify(self, contact, node):
         receipient = self.regex.match(contact).group(1)
-        msg = MIMEText(config.notify_text_long % {
-            'mac': node.mac,
-            'name': node.name,
-            'contact': receipient,
-            'since': str(int((time() - node.lastseen) / 60)) + 'm',
-        }, _charset='utf-8')
+        msg = MIMEText(node.format_infotext(config.email['text']), _charset='utf-8')
         msg['Subject'] = '[Nodewatcher] %s offline' % node.name
         msg['From'] = config.email['from']
         msg['To'] = receipient

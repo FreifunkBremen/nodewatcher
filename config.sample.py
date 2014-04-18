@@ -9,6 +9,8 @@ db = 'sqlite:///nodes.db'
 notify_timeout = 60*60 # one hour
 
 # Long notification text, used for example for mails
+# This isn't actually used, but shortens the definition in the plugin
+# configuration below
 notify_text_long = """Hallo lieber Freifunker!
 
 Dein Knoten %(name)s (MAC-Adresse %(mac)s) ist seit %(since)s offline.
@@ -29,6 +31,8 @@ Solltest du für diesen oder alle deine Knoten keine solchen Mails mehr erhalten
 wollen, sende bitte eine Mail an nodewatcher@example.org"""
 
 # Short notification text, used for example for XMPP or Twitter
+# This isn't actually used, but shortens the definition in the plugin
+# configuration below
 notify_text_short = "Hey Freifunker, dein Knoten %(name)s (MAC %(mac)s) ist seit %(since)s offline!"
 
 # E-Mail server configuration
@@ -37,6 +41,7 @@ email = {
     'smtp_server': 'mail.example.org',
     'smtp_username': 'nodewatcher@example.org',
     'smtp_password': 'secret',
+    'text': notify_text_long,
 }
 
 # XMPP server configuration
@@ -44,6 +49,7 @@ xmpp = {
     'server': ('jabber.example.org', 5222),
     'username': 'nodewatcher@example.org',
     'password': 'secret',
+    'text': notify_text_short,
 }
 
 # Twitter API configuration
@@ -56,6 +62,7 @@ twitter = {
     'api_secret': 'bar1',
     'access_token_key': 'foo2',
     'access_token_secret': 'bar2',
+    'text': notify_text_short,
 }
 
 # Trusted Certificate Authorities

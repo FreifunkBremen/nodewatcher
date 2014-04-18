@@ -17,12 +17,7 @@ class XMPPNotifier(BaseNotifier):
         self.xmpp.get_roster()
 
     def notify(self, contact, node):
-        msg = config.notify_text_short % {
-            'mac': node.mac,
-            'name': node.name,
-            'contact': contact,
-            'since': str(int((time() - node.lastseen) / 60)) + 'm',
-        }
+        msg = node.format_infotext(config.xmpp['text'])
         receipient = self.regex.match(contact).group(1)
 
         self.xmpp.send_message(mto=receipient, mbody=msg, mtype='chat')

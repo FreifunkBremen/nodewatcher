@@ -39,12 +39,7 @@ class TwitterNotifier(BaseNotifier):
     def notify(self, contact, node):
         req = self.api.request('direct_messages/new', {
             'screen_name': self.regex.match(contact).group(1),
-            'text': config.notify_text_short % {
-                'mac': node.mac,
-                'name': node.name,
-                'contact': contact,
-                'since': str(int((time() - node.lastseen) / 60)) + 'm',
-            },
+            'text': node.format_infotext(config.twitter['text']),
         })
 
         return req.status_code == 200
