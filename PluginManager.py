@@ -22,14 +22,17 @@ class PluginManager(object):
             module = imp.load_module(self.modulename, *info)
             try:
                 cls = getattr(module, i)
-                # TODO: instanciate on demand
             except AttributeError:
                 pass
             finally:
                 if info[0]:
                     info[0].close()
             if cls:
-                self.plugins.append(cls())
+                # TODO: instantiate on demand
+                try:
+                    self.plugins.append(cls())
+                except:
+                    sys.excepthook(*sys.exc_info())
 
     def quit(self):
         for notifier in self.plugins:
