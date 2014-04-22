@@ -19,6 +19,7 @@ Method     | URI scheme
 -----------|-------------------------------------------------
 E-Mail     | mailto:mail@example.org or just mail@example.org
 XMPP       | xmpp:jabber@example.org
+IRC        | irc://irc.example.org/channel or irc://irc.example.org/nick,isnick
 Twitter DM | @TwitterUsername
 
 Multiple contact methods can be specified separated by ", " (without quotes).
