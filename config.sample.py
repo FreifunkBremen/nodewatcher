@@ -28,7 +28,7 @@ Einrichtung dieses Knotens angegeben wurde. Du erhältst diese Mail nur einmal
 pro Ausfall des Knotens.
 
 Solltest du für diesen oder alle deine Knoten keine solchen Mails mehr erhalten
-wollen, sende bitte eine Mail an nodewatcher@example.org"""
+wollen, teil uns das bitte als Antwort auf diese Mail mit.""",
 
 # Short notification text, used for example for XMPP or Twitter
 # This isn't actually used, but shortens the definition in the plugin
@@ -62,6 +62,12 @@ twitter = {
     'api_secret': 'bar1',
     'access_token_key': 'foo2',
     'access_token_secret': 'bar2',
+    'text': notify_text_short,
+}
+
+# IRC client config
+irc = {
+    'nickname': 'nodewatch',
     'text': notify_text_short,
 }
 
