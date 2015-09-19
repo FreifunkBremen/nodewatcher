@@ -1,6 +1,7 @@
 from TwitterAPI import TwitterAPI
 from BaseNotifier import BaseNotifier
 
+
 class TwitterNotifier(BaseNotifier):
     """
     This notification plugin notifies users via Twitter direct messages.

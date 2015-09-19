@@ -14,7 +14,12 @@ if __name__ == '__main__':
         return getattr(logging, level_string.upper())
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('-l', '--log-level', default=logging.WARNING, type=log_level, help='Set log level (DEBUG, INFO, WARNING, ERROR)')
+    parser.add_argument(
+        '-l', '--log-level',
+        default=logging.WARNING,
+        type=log_level,
+        help='Set log level (DEBUG, INFO, WARNING, ERROR)'
+    )
     args = parser.parse_args()
     if args.log_level:
         logging.basicConfig(level=args.log_level)

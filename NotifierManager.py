@@ -9,6 +9,7 @@ from db import session, Node
 
 logger = logging.getLogger(__name__)
 
+
 class NotifierManager(PluginManager):
     modulename = 'Notifier'
 
@@ -18,7 +19,11 @@ class NotifierManager(PluginManager):
                 if notifier.suitable(contact):
                     return notifier
             except:
-                logger.exception("Exception while determining if %s is suitable for %s" % (notifier.__class__.__name__, contact))
+                logger.exception(
+                    "Exception while determining if %s is suitable for %s",
+                    notifier.__class__.__name__,
+                    contact
+                )
 
     @staticmethod
     def split_contacts(contacts):
@@ -38,7 +43,10 @@ class NotifierManager(PluginManager):
                 try:
                     notified |= bool(notifier.notify(contact, node))
                 except:
-                    logger.exception("Exception during notifiction via %s" % notifier.__class__.__name__)
+                    logger.exception(
+                        "Exception during notifiction via %s",
+                        notifier.__class__.__name__
+                    )
 
         for contact in set(copy_contacts) - set(contacts):
             notifier = self.find_matching(contact)
@@ -46,7 +54,10 @@ class NotifierManager(PluginManager):
                 try:
                     notifier.notify(contact, node)
                 except:
-                    logger.exception("Exception during notifiction via %s" % notifier.__class__.__name__)
+                    logger.exception(
+                        "Exception during notifiction via %s",
+                        notifier.__class__.__name__
+                    )
 
         return notified
 

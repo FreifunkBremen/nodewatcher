@@ -8,8 +8,10 @@ from BaseNotifier import BaseNotifier
 
 logger = logging.getLogger(__name__)
 
+
 class ThreadDoneException(Exception):
     pass
+
 
 class ThreadedIRCClient(threading.Thread):
     def __init__(self, config):
@@ -23,7 +25,11 @@ class ThreadedIRCClient(threading.Thread):
     def privmsg(self, hostname, target, message, port=6667):
         server = self.servers.get(hostname)
         if not server:
-            server = self.client.server().connect(hostname, port, self.config['nickname'])
+            server = self.client.server().connect(
+                hostname,
+                port,
+                self.config['nickname']
+            )
             server.welcome = False
             server.queue = Queue()
             self.servers[hostname] = server
@@ -37,7 +43,7 @@ class ThreadedIRCClient(threading.Thread):
         server.welcome = True
 
     def on_disconnect(self, server, event):
-        for k,v in self.servers.items():
+        for k, v in self.servers.items():
             if v == server:
                 del self.servers[k]
                 break
@@ -78,8 +84,22 @@ class ThreadedIRCClient(threading.Thread):
             server.queue.put('QUIT')
             server.queue.join()
 
+
 class IRCNotifier(BaseNotifier):
-    regex = re.compile('^irc://(?P<server>[a-zA-Z0-9\.]+)(?::(?P<port>\d+))?/(?:#?(?P<channel>[^ ,]+)|(?P<nick>[^ ,]+),isnick)$')
+    regex = re.compile(
+        r"""^
+            irc://                      # protocol "irc://"
+            (?P<server>[a-zA-Z0-9\.]+)  # server
+            (?::(?P<port>\d+))?         # optional port ":1234"
+            /(?:
+                \#?(?P<channel>[^ ,]+)  # channel name, with or without #
+            |
+                (?P<nick>[^ ,]+),isnick # nickname with ,isnick suffix
+            )
+            $
+        """,
+        re.X
+    )
 
     def __init__(self, config):
         self.client = ThreadedIRCClient(config)
@@ -92,7 +112,12 @@ class IRCNotifier(BaseNotifier):
             target = match.group('nick')
         elif match.group('channel'):
             target = '#' + match.group('channel')
-        self.client.privmsg(match.group('server'), target, msg, match.group('port') or 6667)
+        self.client.privmsg(
+            match.group('server'),
+            target,
+            msg,
+            match.group('port') or 6667
+        )
         return True
 
     def quit(self):

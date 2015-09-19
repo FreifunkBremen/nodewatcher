@@ -38,6 +38,7 @@ except ImportError:
 
 Base = declarative_base()
 
+
 class Node(Base):
     __tablename__ = 'nodes'
 
@@ -56,7 +57,9 @@ class Node(Base):
             'id': self.id,
             'name': self.name,
             'contact': self.contact,
-            'since': format_timedelta(datetime.now() - datetime.fromtimestamp(self.lastseen)),
+            'since': format_timedelta(
+                datetime.now() - datetime.fromtimestamp(self.lastseen)
+            ),
         }
 
 engine = create_engine(db)

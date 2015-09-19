@@ -5,6 +5,7 @@ from email.mime.text import MIMEText
 from time import time
 from BaseNotifier import BaseNotifier
 
+
 class EmailNotifier(BaseNotifier):
     regex = re.compile('^(?:mailto:)?([^:@\s]+@[^:@\s]+)$')
 
@@ -14,11 +15,17 @@ class EmailNotifier(BaseNotifier):
         context = ssl.create_default_context()
         self.smtp.starttls(context=context)
         self.smtp.ehlo()
-        self.smtp.login(self.config['smtp_username'], self.config['smtp_password'])
+        self.smtp.login(
+            self.config['smtp_username'],
+            self.config['smtp_password']
+        )
 
     def notify(self, contact, node):
         receipient = self.regex.match(contact).group(1)
-        msg = MIMEText(node.format_infotext(self.config['text']), _charset='utf-8')
+        msg = MIMEText(
+            node.format_infotext(self.config['text']),
+            _charset='utf-8'
+        )
         msg['Subject'] = '[Nodewatcher] %s offline' % node.name
         msg['From'] = self.config['from']
         msg['To'] = receipient

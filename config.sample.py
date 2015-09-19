@@ -4,9 +4,9 @@
 # packages!
 db = 'sqlite:///nodes.db'
 
-# Notify timeout
+# Notify timeout in seconds
 # How long to wait for node to come back before notifying it's owner
-notify_timeout = 60*60 # one hour
+notify_timeout = 3600  # one hour
 
 # Long notification text, used for example for mails
 # This isn't actually used, but shortens the definition in the plugin
@@ -33,7 +33,8 @@ wollen, teil uns das bitte als Antwort auf diese Mail mit.""",
 # Short notification text, used for example for XMPP or Twitter
 # This isn't actually used, but shortens the definition in the plugin
 # configuration below
-notify_text_short = "Hey Freifunker, dein Knoten %(name)s (ID %(id)s) ist seit %(since)s offline!"
+notify_text_short = \
+    "Hey Freifunker, dein Knoten %(name)s (ID %(id)s) ist seit %(since)s offline!"
 
 # This contact (or ", "-separated list of contacts) will receive a copy of
 # every notification sent out.
@@ -72,9 +73,10 @@ notifiers = [
     ['TwitterNotifier', {
         # Twitter API configuration
         # Note that you can only send direct messages to your followers.
-        # The needed keys can be generated and obtained from https://app.twitter.com/.
-        # Note that you need to generate an Access token that is allowed to access
-        # direct messages.
+        # The needed keys can be generated and obtained from
+        # https://app.twitter.com/
+        # Note that you need to generate an Access token that is allowed to
+        # access direct messages.
         'api_key': 'foo1',
         'api_secret': 'bar1',
         'access_token_key': 'foo2',

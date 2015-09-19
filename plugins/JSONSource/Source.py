@@ -5,6 +5,7 @@ from urllib.request import urlopen
 
 import config
 
+
 class JSONSource:
     def __init__(self, config):
         self.config = config
@@ -25,7 +26,11 @@ class JSONSource:
                     'name': nodeinfo.get('hostname'),
                     'contact': nodeinfo['owner']['contact'],
                     'online': node.get('flags', {}).get('online'),
-                    'lastseen': 'lastseen' in node and datetime.strptime(node['lastseen'], '%Y-%m-%dT%H:%M:%S')
+                    'lastseen': 'lastseen' in node and
+                                datetime.strptime(
+                                    node['lastseen'],
+                                    '%Y-%m-%dT%H:%M:%S'
+                                )
                 }
             except KeyError:
                 pass

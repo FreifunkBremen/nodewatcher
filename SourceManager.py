@@ -8,6 +8,7 @@ from db import session, Node
 
 logger = logging.getLogger(__name__)
 
+
 class SourceManager(PluginManager):
     modulename = 'Source'
 
@@ -18,7 +19,10 @@ class SourceManager(PluginManager):
             try:
                 nodes.extend(source.nodes())
             except:
-                logger.exception("Exception while getting nodes from %s" % source.__class__.__name__)
+                logger.exception(
+                    "Exception while getting nodes from %s",
+                    source.__class__.__name__
+                )
                 # If a source failed, we do not want to massively report
                 # false-positives, thus re-raise the exception here!
                 raise

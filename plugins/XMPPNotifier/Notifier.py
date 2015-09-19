@@ -3,13 +3,17 @@ from time import sleep
 from sleekxmpp import ClientXMPP
 from BaseNotifier import BaseNotifier
 
+
 class XMPPNotifier(BaseNotifier):
     regex = re.compile('^xmpp:([^:@\s]+@[^:@\s]+)$')
 
     def __init__(self, config):
         self.config = config
         self.started = False
-        self.xmpp = ClientXMPP(self.config['username'], self.config['password'])
+        self.xmpp = ClientXMPP(
+            self.config['username'],
+            self.config['password']
+        )
         self.xmpp.add_event_handler('session_start', self.start)
         self.xmpp.connect(address=self.config['server'], use_tls=True)
         self.xmpp.process()
