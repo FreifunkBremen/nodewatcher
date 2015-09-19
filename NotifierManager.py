@@ -48,16 +48,17 @@ class NotifierManager(PluginManager):
                         notifier.__class__.__name__
                     )
 
-        for contact in set(copy_contacts) - set(contacts):
-            notifier = self.find_matching(contact)
-            if notifier:
-                try:
-                    notifier.notify(contact, node)
-                except:
-                    logger.exception(
-                        "Exception during notifiction via %s",
-                        notifier.__class__.__name__
-                    )
+        if notified:
+            for contact in set(copy_contacts) - set(contacts):
+                notifier = self.find_matching(contact)
+                if notifier:
+                    try:
+                        notifier.notify(contact, node)
+                    except:
+                        logger.exception(
+                            "Exception during notifiction via %s",
+                            notifier.__class__.__name__
+                        )
 
         return notified
 
