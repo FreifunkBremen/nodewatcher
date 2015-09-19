@@ -74,7 +74,7 @@ notifiers = [
         # Twitter API configuration
         # Note that you can only send direct messages to your followers.
         # The needed keys can be generated and obtained from
-        # https://app.twitter.com/
+        # https://apps.twitter.com/
         # Note that you need to generate an Access token that is allowed to
         # access direct messages.
         'api_key': 'foo1',

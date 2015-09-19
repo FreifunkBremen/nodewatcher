@@ -30,7 +30,7 @@ Requirements
 The required Python packages are
 
 * SQLAlchemy
-* sleepxmpp ≥1.0 (for the XMPP notification plugin)
+* sleekxmpp ≥1.0 (for the XMPP notification plugin)
 * TwitterAPI (for the Twitter notification plugin)
 
 Setup
