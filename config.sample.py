@@ -71,11 +71,6 @@ irc = {
     'text': notify_text_short,
 }
 
-# Trusted Certificate Authorities
-# This path points to a file that contains all trusted root CAs.
-# Debian: /etc/ssl/certs/ca-certificates.crt
-ca_certs = '/etc/ssl/certs/ca-certificates.crt'
-
 # This contact (or ", "-separated list of contacts) will receive a copy of
 # every notification sent out.
 copy_contact = 'xmpp:freifunk@example.org'
