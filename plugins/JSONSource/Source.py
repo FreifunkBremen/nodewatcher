@@ -28,8 +28,8 @@ class JSONSource:
                     'online': node.get('flags', {}).get('online'),
                     'lastseen': 'lastseen' in node and
                                 datetime.strptime(
-                                    node['lastseen'],
-                                    '%Y-%m-%dT%H:%M:%S'
+                                    node['lastseen'] + "+0000",
+                                    '%Y-%m-%dT%H:%M:%S%z'
                                 ).timestamp()
                 }
             except KeyError:
