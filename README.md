@@ -32,6 +32,7 @@ The required Python packages are
 * SQLAlchemy
 * sleekxmpp ≥1.0 (for the XMPP notification plugin)
 * TwitterAPI (for the Twitter notification plugin)
+* [IRClib](https://bitbucket.org/jaraco/irc) (for the IRC notification plugin)
 
 Setup
 -----

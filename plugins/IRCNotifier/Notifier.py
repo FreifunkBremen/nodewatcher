@@ -17,7 +17,7 @@ class ThreadedIRCClient(threading.Thread):
     def __init__(self, config):
         self.config = config
         super().__init__()
-        self.client = irc.client.IRC()
+        self.client = irc.client.Reactor()
         self.client.add_global_handler("welcome", self.on_connect)
         self.client.add_global_handler("disconnect", self.on_disconnect)
         self.servers = {}
@@ -102,6 +102,7 @@ class IRCNotifier(BaseNotifier):
     )
 
     def __init__(self, config):
+        self.config = config
         self.client = ThreadedIRCClient(config)
 
     def notify(self, contact, node):
