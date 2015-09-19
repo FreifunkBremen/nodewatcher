@@ -67,9 +67,11 @@ class NotifierManager(PluginManager):
             Node.lastseen <= time() - config.notify_timeout,
             or_(Node.lastcontact < Node.lastseen, Node.lastcontact == None),
             Node.contact != None,
-            or_(Node.ignore == None, Node.ignore == 0),
+            Node.ignore == 0 if config.whitelisting
+            else or_(Node.ignore == None, Node.ignore == 0),
         )
         for node in to_notify:
+            logger.info("Notifying node %s (ID %s)", node.name, node.id)
             if self.notify_node(node):
                 node.lastcontact = time()
         session.commit()

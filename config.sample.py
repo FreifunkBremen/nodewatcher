@@ -8,6 +8,11 @@ db = 'sqlite:///nodes.db'
 # How long to wait for node to come back before notifying it's owner
 notify_timeout = 3600  # one hour
 
+# Whitelist mode
+# If enabled, nodes must manually be whitelisted in the database by setting
+# their ignore value to 0 instead of NULL. This is useful for testing.
+whitelisting = False
+
 # Long notification text, used for example for mails
 # This isn't actually used, but shortens the definition in the plugin
 # configuration below
