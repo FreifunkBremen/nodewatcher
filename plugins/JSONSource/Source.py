@@ -30,7 +30,7 @@ class JSONSource:
                                 datetime.strptime(
                                     node['lastseen'],
                                     '%Y-%m-%dT%H:%M:%S'
-                                )
+                                ).timestamp()
                 }
             except KeyError:
                 pass
