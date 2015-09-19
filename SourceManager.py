@@ -30,7 +30,6 @@ class SourceManager(PluginManager):
                 session.add(dbnode)
             dbnode.name = node['name']
             dbnode.contact = node.get('contact')
-            dbnode.vpn = node.get('vpn')
             if node['online']:
                 dbnode.lastseen = time()
         session.commit()

@@ -15,7 +15,6 @@ class AlfredSource:
                     'mac': mac,
                     'name': values.get('hostname'),
                     'contact': values.get('owner', {}).get('contact'),
-                    'vpn': values.get('software', {}).get('fastd', {}).get('enabled'),
                     'online': 1,
                     })
         return nodes

@@ -43,7 +43,6 @@ class Node(Base):
 
     mac = Column(String, primary_key=True)
     name = Column(String)
-    vpn = Column(Integer)
     lastseen = Column(Integer)
     contact = Column(String)
     lastcontact = Column(Integer)
