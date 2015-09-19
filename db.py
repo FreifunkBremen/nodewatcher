@@ -53,14 +53,14 @@ class Node(Base):
         return "<Node(id='%s', name='%s')>" % (self.id, self.name)
 
     def format_infotext(self, text):
-        return text % {
-            'id': self.id,
-            'name': self.name,
-            'contact': self.contact,
-            'since': format_timedelta(
+        return text.format(
+            id=self.id,
+            name=self.name,
+            contact=self.contact,
+            since=format_timedelta(
                 datetime.now() - datetime.fromtimestamp(self.lastseen)
             ),
-        }
+        )
 
 engine = create_engine(db)
 Session = sessionmaker(bind=engine)

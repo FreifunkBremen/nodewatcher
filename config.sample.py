@@ -13,7 +13,7 @@ notify_timeout = 3600  # one hour
 # configuration below
 notify_text_long = """Hallo lieber Freifunker!
 
-Dein Knoten %(name)s (ID %(id)s) ist seit %(since)s offline.
+Dein Knoten {name} (ID {id}) ist seit {since} offline.
 
 Vielleicht ist er nicht mehr in Reichweite eines benachbarten Knoten oder seine
 VPN-Verbindung ist abgebrochen? Wenn du Probleme hast, den Knoten wieder zum
@@ -23,18 +23,18 @@ Viele Grüße,
 deine Freifunk-Community
 
 -- 
-Du erhältst diese Mail, weil die E-Mailadresse %(contact)s als Kontakt bei der
+Du erhältst diese Mail, weil die E-Mailadresse {contact} als Kontakt bei der
 Einrichtung dieses Knotens angegeben wurde. Du erhältst diese Mail nur einmal
 pro Ausfall des Knotens.
 
 Solltest du für diesen oder alle deine Knoten keine solchen Mails mehr erhalten
-wollen, teil uns das bitte als Antwort auf diese Mail mit.""",
+wollen, teil uns das bitte als Antwort auf diese Mail mit."""
 
 # Short notification text, used for example for XMPP or Twitter
 # This isn't actually used, but shortens the definition in the plugin
 # configuration below
 notify_text_short = \
-    "Hey Freifunker, dein Knoten %(name)s (ID %(id)s) ist seit %(since)s offline!"
+    "Hey Freifunker, dein Knoten {name} (ID {id}) ist seit {since} offline!"
 
 # This contact (or ", "-separated list of contacts) will receive a copy of
 # every notification sent out.
