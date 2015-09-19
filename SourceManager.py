@@ -19,6 +19,9 @@ class SourceManager(PluginManager):
                 nodes.extend(source.nodes())
             except:
                 logger.exception("Exception while getting nodes from %s" % source.__class__.__name__)
+                # If a source failed, we do not want to massively report
+                # false-positives, thus re-raise the exception here!
+                raise
         return nodes
 
     def update_database(self):
