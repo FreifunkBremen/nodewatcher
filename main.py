@@ -5,6 +5,7 @@ import re
 import logging
 import argparse
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
+import config
 from NotifierManager import NotifierManager
 from SourceManager import SourceManager
 
@@ -17,9 +18,9 @@ if __name__ == '__main__':
     args = parser.parse_args()
     if args.log_level:
         logging.basicConfig(level=args.log_level)
-    s = SourceManager()
+    s = SourceManager(config.sources)
     s.update_database()
     s.quit()
-    n = NotifierManager()
+    n = NotifierManager(config.notifiers)
     n.notify_down()
     n.quit()

@@ -1,5 +1,4 @@
 from TwitterAPI import TwitterAPI
-import config
 from BaseNotifier import BaseNotifier
 
 class TwitterNotifier(BaseNotifier):
@@ -19,27 +18,28 @@ class TwitterNotifier(BaseNotifier):
     [1] https://support.twitter.com/articles/76915
     [2] https://app.twitter.com/
 
-    :config twitter['api_key'] The API key for an app
-    :config twitter['api_secret'] The API secret for an app
-    :config twitter['access_token_key'] The access token for your account
-    :config twitter['access_token_secret'] The access token secret for your account
+    :config api_key The API key for an app
+    :config api_secret The API secret for an app
+    :config access_token_key The access token for your account
+    :config access_token_secret The access token secret for your account
     """
 
     regex = re.compile('^@([A-Za-z_][A-Za-z0-9_]+)$')
     api_base = 'https://api.twitter.com/1.1/'
 
-    def __init__(self):
+    def __init__(self, config):
+        self.config = config
         self.api = TwitterAPI(
-            config.twitter['api_key'],
-            config.twitter['api_secret'],
-            config.twitter['access_token_key'],
-            config.twitter['access_token_secret'],
+            self.config['api_key'],
+            self.config['api_secret'],
+            self.config['access_token_key'],
+            self.config['access_token_secret'],
         )
 
     def notify(self, contact, node):
         req = self.api.request('direct_messages/new', {
             'screen_name': self.regex.match(contact).group(1),
-            'text': node.format_infotext(config.twitter['text']),
+            'text': node.format_infotext(self.config['text']),
         })
 
         return req.status_code == 200

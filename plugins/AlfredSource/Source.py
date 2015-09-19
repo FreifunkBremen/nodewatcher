@@ -3,8 +3,8 @@ import subprocess
 import json
 
 class AlfredSource:
-    def __init__(self,request_data_type = 158):
-        self.request_data_type = request_data_type
+    def __init__(self, config):
+        self.request_data_type = config['request_data_type']
 
     def nodes(self):
         output = subprocess.check_output(["alfred-json","-z","-r",str(self.request_data_type),"-f","json"])

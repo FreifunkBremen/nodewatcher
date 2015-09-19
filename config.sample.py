@@ -35,42 +35,54 @@ wollen, teil uns das bitte als Antwort auf diese Mail mit.""",
 # configuration below
 notify_text_short = "Hey Freifunker, dein Knoten %(name)s (MAC %(mac)s) ist seit %(since)s offline!"
 
-# E-Mail server configuration
-email = {
-    'from': 'nodewatcher@example.org',
-    'smtp_server': 'mail.example.org',
-    'smtp_username': 'nodewatcher@example.org',
-    'smtp_password': 'secret',
-    'text': notify_text_long,
-}
-
-# XMPP server configuration
-xmpp = {
-    'server': ('jabber.example.org', 5222),
-    'username': 'nodewatcher@example.org',
-    'password': 'secret',
-    'text': notify_text_short,
-}
-
-# Twitter API configuration
-# Note that you can only send direct messages to your followers.
-# The needed keys can be generated and obtained from https://app.twitter.com/.
-# Note that you need to generate an Access token that is allowed to access
-# direct messages.
-twitter = {
-    'api_key': 'foo1',
-    'api_secret': 'bar1',
-    'access_token_key': 'foo2',
-    'access_token_secret': 'bar2',
-    'text': notify_text_short,
-}
-
-# IRC client config
-irc = {
-    'nickname': 'nodewatch',
-    'text': notify_text_short,
-}
-
 # This contact (or ", "-separated list of contacts) will receive a copy of
 # every notification sent out.
 copy_contact = 'xmpp:freifunk@example.org'
+
+
+# Source configuration. Most sources need some kind of config, which can be
+# done here. To disable a source, simply comment out the whole line. Multiple
+# entries with different configuration are possible.
+sources = [
+    ['AlfredSource', {'request_data_type': 158}],
+]
+
+# Notifier configuration. Most notifiers need some kind of config, which can be
+# done here. To disable a notifier, simply comment out the whole block.
+notifiers = [
+    ['EmailNotifier', {
+        # E-Mail server configuration
+        'from': 'nodewatcher@example.org',
+        'smtp_server': 'mail.example.org',
+        'smtp_username': 'nodewatcher@example.org',
+        'smtp_password': 'secret',
+        'text': notify_text_long,
+    }],
+
+    ['XMPPNotifier', {
+        # XMPP server configuration
+        'server': ('jabber.example.org', 5222),
+        'username': 'nodewatcher@example.org',
+        'password': 'secret',
+        'text': notify_text_short,
+    }],
+
+    ['TwitterNotifier', {
+        # Twitter API configuration
+        # Note that you can only send direct messages to your followers.
+        # The needed keys can be generated and obtained from https://app.twitter.com/.
+        # Note that you need to generate an Access token that is allowed to access
+        # direct messages.
+        'api_key': 'foo1',
+        'api_secret': 'bar1',
+        'access_token_key': 'foo2',
+        'access_token_secret': 'bar2',
+        'text': notify_text_short,
+    }],
+
+    ['IRCNotifier', {
+        # IRC client config
+        'nickname': 'nodewatch',
+        'text': notify_text_short,
+    }],
+]

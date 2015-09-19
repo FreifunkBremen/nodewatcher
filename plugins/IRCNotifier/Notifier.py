@@ -5,7 +5,6 @@ from time import sleep
 from queue import Queue, Empty
 import irc.client
 from BaseNotifier import BaseNotifier
-import config
 
 logger = logging.getLogger(__name__)
 
@@ -13,7 +12,8 @@ class ThreadDoneException(Exception):
     pass
 
 class ThreadedIRCClient(threading.Thread):
-    def __init__(self):
+    def __init__(self, config):
+        self.config = config
         super().__init__()
         self.client = irc.client.IRC()
         self.client.add_global_handler("welcome", self.on_connect)
@@ -23,7 +23,7 @@ class ThreadedIRCClient(threading.Thread):
     def privmsg(self, hostname, target, message, port=6667):
         server = self.servers.get(hostname)
         if not server:
-            server = self.client.server().connect(hostname, port, config.irc['nickname'])
+            server = self.client.server().connect(hostname, port, self.config['nickname'])
             server.welcome = False
             server.queue = Queue()
             self.servers[hostname] = server
@@ -81,11 +81,11 @@ class ThreadedIRCClient(threading.Thread):
 class IRCNotifier(BaseNotifier):
     regex = re.compile('^irc://(?P<server>[a-zA-Z0-9\.]+)(?::(?P<port>\d+))?/(?:#?(?P<channel>[^ ,]+)|(?P<nick>[^ ,]+),isnick)$')
 
-    def __init__(self):
-        self.client = ThreadedIRCClient()
+    def __init__(self, config):
+        self.client = ThreadedIRCClient(config)
 
     def notify(self, contact, node):
-        msg = node.format_infotext(config.irc['text'])
+        msg = node.format_infotext(self.config['text'])
 
         match = self.regex.match(contact)
         if match.group('nick'):
