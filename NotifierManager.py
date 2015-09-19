@@ -66,7 +66,7 @@ class NotifierManager(PluginManager):
             Node.lastseen <= time() - config.notify_timeout,
             or_(Node.lastcontact < Node.lastseen, Node.lastcontact == None),
             Node.contact != None,
-            Node.ignore.in_([None, 0]),
+            or_(Node.ignore == None, Node.ignore == 0),
         )
         for node in to_notify:
             if self.notify_node(node):
