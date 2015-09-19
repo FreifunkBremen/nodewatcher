@@ -13,7 +13,7 @@ notify_timeout = 60*60 # one hour
 # configuration below
 notify_text_long = """Hallo lieber Freifunker!
 
-Dein Knoten %(name)s (MAC-Adresse %(mac)s) ist seit %(since)s offline.
+Dein Knoten %(name)s (ID %(id)s) ist seit %(since)s offline.
 
 Vielleicht ist er nicht mehr in Reichweite eines benachbarten Knoten oder seine
 VPN-Verbindung ist abgebrochen? Wenn du Probleme hast, den Knoten wieder zum
@@ -33,7 +33,7 @@ wollen, teil uns das bitte als Antwort auf diese Mail mit.""",
 # Short notification text, used for example for XMPP or Twitter
 # This isn't actually used, but shortens the definition in the plugin
 # configuration below
-notify_text_short = "Hey Freifunker, dein Knoten %(name)s (MAC %(mac)s) ist seit %(since)s offline!"
+notify_text_short = "Hey Freifunker, dein Knoten %(name)s (ID %(id)s) ist seit %(since)s offline!"
 
 # This contact (or ", "-separated list of contacts) will receive a copy of
 # every notification sent out.

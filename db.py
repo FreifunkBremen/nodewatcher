@@ -41,7 +41,7 @@ Base = declarative_base()
 class Node(Base):
     __tablename__ = 'nodes'
 
-    mac = Column(String, primary_key=True)
+    id = Column(String, primary_key=True)
     name = Column(String)
     lastseen = Column(Integer)
     contact = Column(String)
@@ -49,11 +49,11 @@ class Node(Base):
     ignore = Column(Integer)
 
     def __repr__(self):
-        return "<Node(mac='%s', name='%s')>" % (self.mac, self.name)
+        return "<Node(id='%s', name='%s')>" % (self.id, self.name)
 
     def format_infotext(self, text):
         return text % {
-            'mac': self.mac,
+            'id': self.id,
             'name': self.name,
             'contact': self.contact,
             'since': format_timedelta(datetime.now() - datetime.fromtimestamp(self.lastseen)),

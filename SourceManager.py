@@ -24,9 +24,9 @@ class SourceManager(PluginManager):
     def update_database(self):
         nodes = self.get_nodes()
         for node in nodes:
-            dbnode = session.query(Node).filter_by(mac=node['mac']).first()
+            dbnode = session.query(Node).filter_by(id=node['id']).first()
             if not dbnode:
-                dbnode = Node(mac=node['mac'])
+                dbnode = Node(id=node['id'])
                 session.add(dbnode)
             dbnode.name = node['name']
             dbnode.contact = node.get('contact')

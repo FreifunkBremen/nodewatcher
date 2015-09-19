@@ -10,14 +10,16 @@ class AlfredSource:
         output = subprocess.check_output(["alfred-json","-z","-r",str(self.request_data_type),"-f","json"])
         alfred_data = json.loads(output.decode("utf-8"))
         nodes = []
-        for mac, values in alfred_data.items():
-            nodes.append({
-                    'mac': mac,
+        for mac, values in alfred_data.values():
+            try:
+                yield {
+                    'id': values.get('node_id', mac.replace(':', '')),
                     'name': values.get('hostname'),
-                    'contact': values.get('owner', {}).get('contact'),
+                    'contact': values['owner']['contact'],
                     'online': 1,
-                    })
-        return nodes
+                }
+            except KeyError:
+                pass
 
 if __name__ == "__main__":
     ad = Alfred()

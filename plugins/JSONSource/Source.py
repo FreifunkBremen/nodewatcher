@@ -18,11 +18,14 @@ class JSONSource:
         except AttributeError:
             it = iter(nodes)
         for node in it:
-            nodeinfo = node.get('nodeinfo', {})
-            yield {
-                'mac': nodeinfo.get('network', {}).get('mac'),
-                'name': nodeinfo.get('hostname'),
-                'contact': nodeinfo.get('owner', {}).get('contact'),
-                'online': node.get('flags', {}).get('online'),
-                'lastseen': 'lastseen' in node and datetime.strptime(node['lastseen'], '%Y-%m-%dT%H:%M:%S')
-            }
+            try:
+                nodeinfo = node['nodeinfo']
+                yield {
+                    'id': nodeinfo['node_id'],
+                    'name': nodeinfo.get('hostname'),
+                    'contact': nodeinfo['owner']['contact'],
+                    'online': node.get('flags', {}).get('online'),
+                    'lastseen': 'lastseen' in node and datetime.strptime(node['lastseen'], '%Y-%m-%dT%H:%M:%S')
+                }
+            except KeyError:
+                pass
