@@ -30,7 +30,9 @@ class SourceManager(PluginManager):
                 session.add(dbnode)
             dbnode.name = node['name']
             dbnode.contact = node.get('contact')
-            if node['online']:
+            if node.get('lastseen'):
+                dbnode.lastseen = node['lastseen']
+            elif node['online']:
                 dbnode.lastseen = time()
         session.commit()
 
