@@ -13,6 +13,8 @@ class EmailNotifier(BaseNotifier):
         self.config = config
         self.smtp = SMTP(config['smtp_server'])
         context = ssl.create_default_context()
+        context.check_hostname=False
+        context.verify_mode=ssl.CERT_NONE
         self.smtp.starttls(context=context)
         self.smtp.ehlo()
         self.smtp.login(
