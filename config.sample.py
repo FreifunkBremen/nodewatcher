@@ -51,8 +51,8 @@ copy_contact = 'xmpp:freifunk@example.org'
 # entries with different configuration are possible.
 sources = [
     ['AlfredSource', {'request_data_type': 158}],
-    ['NodeListSource', {'url': 'http://example.org/map/nodes.json'}],
-    ['NodeListSource', {'url': 'http://example.net/map/nodes.json'}],
+    ['JSONSource', {'url': 'http://example.org/map/nodes.json'}],
+    ['JSONSource', {'url': 'http://example.net/map/nodes.json'}],
 ]
 
 # Notifier configuration. Most notifiers need some kind of config, which can be
